@@ -14,6 +14,10 @@ export class UsersService {
   }
 
   create(data): Promise<User> {
-    return this.userRepository.save(data);
+    try {
+      return this.userRepository.save(data);
+    } catch (error) {
+      console.error(error);
+    }
   }
 }

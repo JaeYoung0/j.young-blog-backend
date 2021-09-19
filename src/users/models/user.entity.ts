@@ -1,5 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-
+import { Exclude } from 'class-transformer';
+import { IsNumber, IsEmail } from 'class-validator';
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
@@ -12,5 +13,6 @@ export class User {
   phone: string;
 
   @Column()
+  @Exclude()
   password: string;
 }

@@ -1,8 +1,14 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+} from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { RegisterDto } from './models/register.dto';
 import * as bcrypt from 'bcryptjs';
-
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('auth')
 export class AuthController {
   constructor(private usersService: UsersService) {}
@@ -12,10 +18,15 @@ export class AuthController {
     const { email, phone, password } = body;
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    return this.usersService.create({
+    await this.usersService.create({
       email,
       phone,
       password: hashedPassword,
     });
+
+    return {
+      email,
+      phone,
+    };
   }
 }
