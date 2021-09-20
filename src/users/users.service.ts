@@ -9,6 +9,15 @@ export class UsersService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
+  /**
+   *
+   * @param command id,email과 같이 unique한 field값을 받는 객체 ... {id} {email}
+   * @param options FindOneOptions
+   */
+  findOne(command, options?): Promise<User> {
+    return this.userRepository.findOne(command, options);
+  }
+
   findAll(): Promise<User[]> {
     return this.userRepository.find();
   }
