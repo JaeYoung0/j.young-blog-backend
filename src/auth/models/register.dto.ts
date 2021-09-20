@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsPhoneNumber } from 'class-validator';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class RegisterDto {
   @IsNotEmpty()
@@ -6,9 +6,11 @@ export class RegisterDto {
   email: string;
 
   @IsNotEmpty()
-  @IsPhoneNumber()
   phone: number;
 
   @IsNotEmpty()
   password: string;
+
+  @IsNotEmpty()
+  passwordCheck: string;
 }

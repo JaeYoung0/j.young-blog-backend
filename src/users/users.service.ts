@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './models/user.entity';
 import { Repository } from 'typeorm';
@@ -18,6 +18,11 @@ export class UsersService {
       return this.userRepository.save(data);
     } catch (error) {
       console.error(error);
+
+      throw new BadRequestException({
+        status: 'error',
+        error,
+      });
     }
   }
 }

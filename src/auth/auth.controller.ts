@@ -4,6 +4,7 @@ import {
   Body,
   UseInterceptors,
   ClassSerializerInterceptor,
+  BadRequestException,
 } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { RegisterDto } from './models/register.dto';
@@ -15,7 +16,15 @@ export class AuthController {
 
   @Post('register')
   async register(@Body() body: RegisterDto) {
-    const { email, phone, password } = body;
+    const { email, phone, password, passwordCheck } = body;
+
+    if (password !== passwordCheck) {
+      throw new BadRequestException({
+        field: 'password',
+        message: '패스워드가 일치하지 않습니다!',
+      });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 12);
 
     await this.usersService.create({
@@ -25,8 +34,8 @@ export class AuthController {
     });
 
     return {
+      status: 'success',
       email,
-      phone,
     };
   }
 }
