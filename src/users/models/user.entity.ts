@@ -15,4 +15,7 @@ export class User {
   @Column()
   @Exclude()
   password: string;
+
+  @Column()
+  provider: string;
 }

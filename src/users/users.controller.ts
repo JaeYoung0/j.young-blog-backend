@@ -3,7 +3,10 @@ import {
   Get,
   UseInterceptors,
   ClassSerializerInterceptor,
+  Param,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 // import { UserCreateDto } from './models/user-create.dto';
 // import { User } from './models/user.entity';
 import { UsersService } from './users.service';
@@ -18,9 +21,9 @@ export class UsersController {
     return await this.usersService.findAll();
   }
 
-  // 유저 등록은 여기서 하지말고 /api/auth/register에서 하자
-  // @Post()
-  // async create(@Body() body: UserCreateDto): Promise<User> {
-  //   return this.usersService.create(body);
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Get(':userId')
+  async findOne(@Param('userId') id: string) {
+    return await this.usersService.findOne({ id });
+  }
 }
